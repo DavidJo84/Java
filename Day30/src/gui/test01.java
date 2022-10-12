@@ -15,6 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class test01 extends JFrame implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7024040638547273794L;
 	JLabel titleLB = new JLabel("휴먼프로그램");
 	JButton btn = new JButton("Login");
 	JButton close = new JButton("Exit");
