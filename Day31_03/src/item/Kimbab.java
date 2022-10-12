@@ -1,0 +1,40 @@
+package item;
+
+public class Kimbab implements Item_INF {
+	String kind = "김밥";
+	String comment = "옆구리가 터저야 제맛이지";
+	String name;
+	int price;
+	int cnt;
+
+	@Override
+	public void insert(Item_DTO m) {
+		this.name = m.getName();
+		this.price = m.getPrice();
+		this.cnt = m.getCnt();
+
+	}
+
+	@Override
+	public void pay() {
+		System.out.println("지불하실 금액은 "+ price * cnt + "원 입니다.");
+
+	}
+
+	@Override
+	public void showInfo() {
+		System.out.println("------------");
+		System.out.println(kind);
+		System.out.println(name);
+		System.out.println("가격: " + price);
+		System.out.println("수량: " + cnt);
+
+	}
+
+	@Override
+	public void showcomment() {
+		System.out.println(comment);
+		
+	}
+
+}
