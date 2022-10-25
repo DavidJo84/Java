@@ -30,7 +30,6 @@ public class ModyPat extends JFrame implements ActionListener {
 	private JTextField txtInputroom;
 	private JTextField txtInputname;
 	private JTextField txtInputage;
-	private JTextField txtInputdepart;
 	private JTextField txtInputdisease;
 	private JTextField txtInputindate;
 	private JTextField txtInputmemo;
@@ -153,7 +152,7 @@ public class ModyPat extends JFrame implements ActionListener {
 			String name = txtInputname.getText();
 			String sex = txtInputsex.getText();
 			int age = Integer.parseInt(txtInputage.getText());
-			String depart = txtInputdepart.getText();
+			String depart = comboBox.getSelectedItem().toString();
 			String disease = txtInputdisease.getText();
 			String memo = txtInputmemo.getText();
 			String indate = txtInputindate.getText();
@@ -170,23 +169,20 @@ public class ModyPat extends JFrame implements ActionListener {
 
 			if (mod.getNo().equals(pdto.getNo()) || pdao.chkNo(pdto.getNo())) {
 				pdao.modyWord(pdto, mod);
+				JOptionPane.showMessageDialog(null, "수정되었습니다.");
 				txtInputno.setText("");
 				txtInputroom.setText("");
 				txtInputname.setText("");
 				txtInputsex.setText("");
 				txtInputage.setText("");
-				txtInputdepart.setText("");
 				txtInputdisease.setText("");
 				txtInputmemo.setText("");
 				txtInputindate.setText("");
+				this.setVisible(false);
 				MainWin.btnSer.doClick();
 			} else {
 				JOptionPane.showMessageDialog(null, "사용중인 환자번호입니다.");
 			}
 		}
-
-		// TODO Auto-generated method stub
-
 	}
-
 }

@@ -191,7 +191,7 @@ public class UserMGR extends JFrame implements ActionListener, ItemListener {
 
 		} else if (temp.equals(save)) {
 			String uid = uidIn.getText();
-			if (!udao.chkUser(uid)) {
+			if (udao.chkUser(uid)) {
 				String uname = unameIn.getText();
 				String upwd = upwdIn.getText();
 				String upart = upartIn.getText();
