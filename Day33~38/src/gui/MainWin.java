@@ -355,95 +355,12 @@ public class MainWin extends JFrame implements ActionListener, MouseListener, It
 	public void actionPerformed(ActionEvent e) {
 		Object temp = e.getSource();
 		if (temp.equals(btnSer)) {
-			int allSum = 0;
-			int allSum_1 = 0;
-			int allSum_2= 0;
-			int sum_ort1= 0;
-			int sum_ort1_1= 0;
-			int sum_ort1_2= 0;
-			int sum_ort2= 0;
-			int sum_ort2_1= 0;
-			int sum_ort2_2= 0;
-			int sum_med = 0;
-			int sum_med_1= 0;
-			int sum_med_2= 0;
-			selList = new ArrayList<String>();
-			String depart = comboBox.getSelectedItem().toString();
-			String date = comboBoxD.getSelectedItem().toString();
-			if (depart.equals("전체과")) {
-				depart = null;
-			}
-			selList.add(depart);
-			selList.add(selRadio);
-			selList.add(textField.getText());
-			selList.add(textField_1.getText());
-			selList.add(date);
-//			for(String i : selList) {
-//				System.out.println(i);
-//			}
-
-			ArrayList<Pat_DTO> pList = pdao.allSelect(selList);
-			allSum = pList.size();
-			for(Pat_DTO i : pList) {
-				if(i.getDepart().equals("양방과")) {
-					sum_med++;
-					if(i.getRoom().charAt(0)=='1') {
-						sum_med_1++;
-						allSum_1++;
-					}else if(i.getRoom().charAt(0)=='2'){
-						sum_med_2++;
-						allSum_2++;
-					}
-				}else if(i.getDepart().equals("한방1과")) {
-					sum_ort1++;
-					if(i.getRoom().charAt(0)=='1') {
-						sum_ort1_1++;
-						allSum_1++;
-					}else if(i.getRoom().charAt(0)=='2'){
-						sum_ort1_2++;
-						allSum_2++;
-					}
-				}else if(i.getDepart().equals("한방2과")) {
-					sum_ort2++;
-					if(i.getRoom().charAt(0)=='1') {
-						sum_ort2_1++;
-						allSum_1++;
-					}else if(i.getRoom().charAt(0)=='2'){
-						sum_ort2_2++;
-						allSum_2++;
-					}
-				}
-			}
-			label_26.setText(Integer.toString(allSum));
-			label_2.setText(Integer.toString(sum_med));
-			label_6.setText(Integer.toString(sum_med_2));//2층 양방과
-			label_7.setText(Integer.toString(sum_ort2_2));//2층 한방2과
-			label_8.setText(Integer.toString(sum_ort1_2));//2층 한방1과
-			label_9.setText(Integer.toString(allSum_2)); //2층 합
-			label_13.setText(Integer.toString(sum_med_1)); //1층 양방과
-			label_14.setText(Integer.toString(sum_ort2_1)); //1층 한방2과
-			label_15.setText(Integer.toString(sum_ort1_1)); //1층 한방1과
-			label_16.setText(Integer.toString(allSum_1));//1층 합
-			label_35.setText(Integer.toString(sum_ort2));//한방2과합계
-			label_25.setText(Integer.toString(sum_ort1));//한방1과 합계
-			model.setNumRows(0);
-			for (Pat_DTO i : pList) {
-				if (i.getOutdate() == null) {
-					model.addRow(new Object[] { i.getNo(), i.getRoom(), i.getName(), i.getSex(), i.getAge(),
-							i.getDepart(), i.getDisease(), i.getMemo(), i.getIndate().substring(2, 10) });
-				} else {
-					model.addRow(new Object[] { i.getNo(), i.getRoom(), i.getName(), i.getSex(), i.getAge(),
-							i.getDepart(), i.getDisease(), i.getMemo(), i.getIndate().substring(2, 10),
-							i.getOutdate().substring(2, 10) });
-				}
-
-				this.setVisible(true);
-			}
+			search();
 		} else if (temp.equals(btnDel)) {
 			int answer = JOptionPane.showConfirmDialog(null, "환자정보를 삭제하시겠습니까?", "확인", JOptionPane.OK_CANCEL_OPTION);
 			if (answer == 0) {
 				pdao.deletePat(value);
-				btnSer.doClick();
+				search();
 			}
 		} else if (temp.equals(btnMod)) {
 //			Pat_DTO mod = pdao.SelectOne(value);
@@ -452,7 +369,7 @@ public class MainWin extends JFrame implements ActionListener, MouseListener, It
 			int answer = JOptionPane.showConfirmDialog(null, "퇴원처리하시겠습니까?", "확인", JOptionPane.OK_CANCEL_OPTION);
 			if (answer == 0) {
 				pdao.outPat(value);
-				btnSer.doClick();
+				search();
 			}
 		} else if (temp.equals(btnAdd)) {
 			new AddPat();
@@ -565,8 +482,88 @@ public class MainWin extends JFrame implements ActionListener, MouseListener, It
 
 	}
 
-	public void exel() {
+	public void search() {
+		int allSum = 0;
+		int allSum_1 = 0;
+		int allSum_2= 0;
+		int sum_ort1= 0;
+		int sum_ort1_1= 0;
+		int sum_ort1_2= 0;
+		int sum_ort2= 0;
+		int sum_ort2_1= 0;
+		int sum_ort2_2= 0;
+		int sum_med = 0;
+		int sum_med_1= 0;
+		int sum_med_2= 0;
+		selList = new ArrayList<String>();
+		String depart = comboBox.getSelectedItem().toString();
+		String date = comboBoxD.getSelectedItem().toString();
+		if (depart.equals("전체과")) {
+			depart = null;
+		}
+		selList.add(depart);
+		selList.add(selRadio);
+		selList.add(textField.getText());
+		selList.add(textField_1.getText());
+		selList.add(date);
+//		for(String i : selList) {
+//			System.out.println(i);
+//		}
 
+		ArrayList<Pat_DTO> pList = pdao.allSelect(selList);
+		allSum = pList.size();
+		for(Pat_DTO i : pList) {
+			if(i.getDepart().equals("양방과")) {
+				sum_med++;
+				if(i.getRoom().charAt(0)=='1') {
+					sum_med_1++;
+					allSum_1++;
+				}else if(i.getRoom().charAt(0)=='2'){
+					sum_med_2++;
+					allSum_2++;
+				}
+			}else if(i.getDepart().equals("한방1과")) {
+				sum_ort1++;
+				if(i.getRoom().charAt(0)=='1') {
+					sum_ort1_1++;
+					allSum_1++;
+				}else if(i.getRoom().charAt(0)=='2'){
+					sum_ort1_2++;
+					allSum_2++;
+				}
+			}else if(i.getDepart().equals("한방2과")) {
+				sum_ort2++;
+				if(i.getRoom().charAt(0)=='1') {
+					sum_ort2_1++;
+					allSum_1++;
+				}else if(i.getRoom().charAt(0)=='2'){
+					sum_ort2_2++;
+					allSum_2++;
+				}
+			}
+		}
+		label_26.setText(Integer.toString(allSum));
+		label_2.setText(Integer.toString(sum_med));
+		label_6.setText(Integer.toString(sum_med_2));//2층 양방과
+		label_7.setText(Integer.toString(sum_ort2_2));//2층 한방2과
+		label_8.setText(Integer.toString(sum_ort1_2));//2층 한방1과
+		label_9.setText(Integer.toString(allSum_2)); //2층 합
+		label_13.setText(Integer.toString(sum_med_1)); //1층 양방과
+		label_14.setText(Integer.toString(sum_ort2_1)); //1층 한방2과
+		label_15.setText(Integer.toString(sum_ort1_1)); //1층 한방1과
+		label_16.setText(Integer.toString(allSum_1));//1층 합
+		label_35.setText(Integer.toString(sum_ort2));//한방2과합계
+		label_25.setText(Integer.toString(sum_ort1));//한방1과 합계
+		model.setNumRows(0);
+		for (Pat_DTO i : pList) {
+			if (i.getOutdate() == null) {
+				model.addRow(new Object[] { i.getNo(), i.getRoom(), i.getName(), i.getSex(), i.getAge(),
+						i.getDepart(), i.getDisease(), i.getMemo(), i.getIndate().substring(2, 10) });
+			} else {
+				model.addRow(new Object[] { i.getNo(), i.getRoom(), i.getName(), i.getSex(), i.getAge(),
+						i.getDepart(), i.getDisease(), i.getMemo(), i.getIndate().substring(2, 10),
+						i.getOutdate().substring(2, 10) });
+			}
+		}
 	}
-
 }
